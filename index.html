@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>School Escape</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="settings-menu">
+    <button id="settingsToggle" class="settings-toggle" type="button" aria-label="Buka pengaturan" aria-expanded="false" title="Pengaturan">
+        ⚙️
+    </button>
+
+    <div id="settingsPanel" class="settings-panel" hidden>
+        <button id="soundToggle" class="sound-toggle" type="button" aria-label="Matikan musik" aria-pressed="true">
+            🔊 Musik
+        </button>
+
+        <label class="volume-control" for="volumeSlider">
+            <span>Volume <b id="volumeValue">35%</b></span>
+            <input id="volumeSlider" type="range" min="0" max="100" value="35" aria-label="Volume musik">
+        </label>
+    </div>
+</div>
+
+<!-- ================= MENU ================= -->
+
+<section id="menuScreen" class="screen active">
+
+    <div class="menu-bg"></div>
+
+    <div class="menu-box">
+
+        <div class="school-icon">
+            <img src="rumah.png" alt="Rumah School Escape">
+        </div>
+
+        <h1>School Escape</h1>
+
+        <p class="subtitle">
+            Kabur dari sekolah sebelum tertangkap guru!
+        </p>
+
+        <div class="menu-card">
+
+            <button id="startButton">
+                ▶ MULAI GAME
+            </button>
+
+            <button id="tutorialButton">
+                📖 CARA BERMAIN
+            </button>
+
+        </div>
+
+        <div class="skin-panel">
+            <div class="skin-heading">
+                <span>🎨 SKIN PLAYER</span>
+                <small id="skinLockStatus">🔒 Selesaikan Level 5</small>
+            </div>
+
+            <div class="skin-options">
+                <button class="skin-option selected" data-skin="classic">
+                    <span class="skin-preview classic-preview">🧑‍🎓</span>
+                    <span>Classic</span>
+                </button>
+                <button class="skin-option locked" data-skin="neon" disabled>
+                    <span class="skin-preview neon-preview">⚡</span>
+                    <span>Neon 🔒</span>
+                </button>
+                <button class="skin-option locked" data-skin="shadow" disabled>
+                    <span class="skin-preview shadow-preview">🥷</span>
+                    <span>Shadow 🔒</span>
+                </button>
+            </div>
+        </div>
+
+        <p class="menu-info">
+            5 Level • 3 Nyawa • Guru Mengejar
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TUTORIAL ================= -->
+
+<section id="tutorialScreen" class="screen">
+
+    <div class="menu-box tutorial-box">
+
+        <h1>📖 Cara Bermain</h1>
+
+        <div class="tutorial">
+
+            <div class="tutorial-item">
+                <img src="player.png">
+                <span>= Kamu</span>
+            </div>
+
+            <div class="tutorial-item">
+                <span class="emoji-item">🔑</span>
+                <span>= Kunci</span>
+            </div>
+
+            <div class="tutorial-item">
+                <span class="emoji-item">🚪</span>
+                <span>= Pintu keluar</span>
+            </div>
+
+            <div class="tutorial-item">
+                <img src="coin.png">
+                <span>= Koin (+50 Score)</span>
+            </div>
+
+            <div class="tutorial-item">
+                <img src="teacher.png">
+                <span>= Guru pengejar</span>
+            </div>
+
+            <div class="tutorial-item">
+                <span class="emoji-item">📚</span>
+                <span>= Rintangan</span>
+            </div>
+
+            <div class="tutorial-item">
+                <span class="emoji-item">🌀</span>
+                <span>= Portal</span>
+            </div>
+
+            <div class="tutorial-item">
+                <span class="emoji-item">⭐</span>
+                <span>= Bonus</span>
+            </div>
+
+        </div>
+
+        <div class="tutorial-control">
+
+            <p>
+                <b>W A S D</b> / <b>Arrow Keys</b> untuk bergerak.
+            </p>
+
+            <p>
+                <b>ESC</b> untuk pause.
+            </p>
+
+            <p>
+                Jangan sampai guru menyentuh kamu!
+            </p>
+
+        </div>
+
+        <button class="menuButton">
+            ← Kembali
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= GAME ================= -->
+
+<section id="gameScreen" class="screen">
+
+    <div class="game-wrapper">
+
+        <div id="levelBanner">
+
+            <h2 id="levelTitle">
+                LEVEL 1 — KELAS
+            </h2>
+
+            <p id="levelDesc">
+                Cari kunci lalu menuju pintu!
+            </p>
+
+        </div>
+
+
+        <!-- HUD -->
+
+        <div class="hud">
+
+            <div class="hud-box">
+                <span class="hud-icon">⭐</span>
+                <span>Score</span>
+                <b id="score">0</b>
+            </div>
+
+            <div class="hud-box">
+                <span class="hud-icon">🪙</span>
+                <span>Koin</span>
+                <b id="coins">0</b>
+            </div>
+
+            <div class="hud-box">
+                <span class="hud-icon">❤️</span>
+                <span>Nyawa</span>
+                <b id="lives">3</b>
+            </div>
+
+            <div class="hud-box">
+                <span class="hud-icon">⏱️</span>
+                <span>Waktu</span>
+                <b id="timer">60</b>
+            </div>
+
+            <div class="hud-box key-hud">
+                <span class="hud-icon">🔑</span>
+                <span id="keyStatus">Belum punya 🔒</span>
+            </div>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="progress-container">
+
+            <div id="progressBar"></div>
+
+        </div>
+
+
+        <!-- GAME AREA -->
+
+        <div id="gameArea">
+
+            <div class="school-board">
+                SCHOOL ESCAPE
+            </div>
+
+            <div class="window window-left"></div>
+            <div class="window window-right"></div>
+
+            <div id="player">
+
+                <img src="player.png" alt="Player">
+
+            </div>
+
+            <div id="messageBox"></div>
+
+            <div id="eventMessage"></div>
+
+        </div>
+
+
+        <div class="controls-info">
+
+            🎮 W A S D / Arrow Keys
+
+            <span>
+                ESC = Pause
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= LEVEL COMPLETE ================= -->
+
+<section id="levelCompleteScreen" class="screen">
+
+    <div class="menu-box">
+
+        <div class="big-icon">
+            🎉
+        </div>
+
+        <h1>
+            Level Berhasil!
+        </h1>
+
+        <p id="levelScore">
+            Score: 0
+        </p>
+
+        <button id="nextLevelButton">
+            🚀 Level Berikutnya
+        </button>
+
+        <button class="menuButton">
+            🏠 Menu Utama
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= GAME OVER ================= -->
+
+<section id="gameOverScreen" class="screen">
+
+    <div class="menu-box">
+
+        <div class="big-icon">
+            😵
+        </div>
+
+        <h1>
+            Game Over
+        </h1>
+
+        <p id="gameOverReason">
+            Kamu tertangkap!
+        </p>
+
+        <p id="finalScore">
+            Score: 0
+        </p>
+
+        <button id="restartButton">
+            🔄 Main Lagi
+        </button>
+
+        <button class="menuButton">
+            🏠 Menu Utama
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= PAUSE ================= -->
+
+<section id="pauseScreen" class="screen">
+
+    <div class="menu-box">
+
+        <div class="big-icon">
+            ⏸️
+        </div>
+
+        <h1>
+            Game Dijeda
+        </h1>
+
+        <button id="resumeButton">
+            ▶ Lanjutkan
+        </button>
+
+        <button class="menuButton">
+            🏠 Menu Utama
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= GURU MARAH ================= -->
+
+<div id="scoldingScene">
+
+    <div class="scolding-background"></div>
+
+    <div class="angry-text">
+
+        😡 HEI!
+
+        <small>
+            KAMU KETANGKAP!
+        </small>
+
+    </div>
+
+
+    <div class="teacher-angry">
+
+        <img
+            src="teacher-angry.png"
+            alt="Guru Marah"
+        >
+
+    </div>
+
+
+    <div class="student-scared">
+
+        <img
+            src="player.png"
+            alt="player"
+        >
+
+    </div>
+
+
+    <div class="scolding-box">
+
+        <h2>
+            👩‍🏫 KAMU MAU KE MANA?!
+        </h2>
+
+        <p>
+            "BELUM WAKTUNYA PULANG!"
+        </p>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
